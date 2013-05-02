@@ -10,7 +10,7 @@ When the API reaches a stable version 1.0 we will mostly likely incorporate it i
 
 ## Features
 
-* Provides index and show actions for all entities (and tasks and users) via json.
+Provides index and show actions for all entities (and tasks and users) via json.
 
  * /api/v1/accounts.json
  * /api/v1/accounts/1.json
