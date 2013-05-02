@@ -2,6 +2,8 @@
 
 This is a plugin for Fat Free CRM that provides an API to access data using REST principles and serialized as json.
 
+The use case currently driving development of the API is to connect with Ember.js applications.
+
 *IMPORTANT NOTE:* Whilst we are developing this plugin, this will be unstable code.
 
 When the API reaches a stable version 1.0 we will mostly likely incorporate it into the Fat Free CRM and release it.
