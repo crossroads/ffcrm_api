@@ -19,8 +19,9 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
     render :json => entity, :serializer => serializer
   end
 
-  def delete
+  def destroy
     entity.destroy
+    render :json => {}
   end
 
   protected

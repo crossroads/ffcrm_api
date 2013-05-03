@@ -14,9 +14,10 @@ Provides index and show actions for all entities (and tasks and users) via json.
 
 E.g. for accounts
 
- * GET /api/v1/accounts.json    (index)
- * GET /api/v1/accounts/1.json  (show)
- * PUT /api/v1/accounts/1.json  (update)
+ * GET    /api/v1/accounts.json   (index)
+ * GET    /api/v1/accounts/1.json (show)
+ * PUT    /api/v1/accounts/1.json (update)
+ * DELETE /api/v1/accounts/1.json (destroy)
 
 Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks and users.
 
@@ -28,7 +29,6 @@ Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks
 * Custom ordering of objects server-side
 * Authentication (Oauth token)
 * Authorization (via CanCan) to ensure user only see/acts on objects they are allowed
-* Ability to delete entities
 * Entity specific API actions E.g. tasks overdue
 
 ## Tests

@@ -23,5 +23,11 @@ describe FfcrmApi::V1::ContactsController do
       end
     end
 
+    it "destroy" do
+      entities.each do |entity|
+        expect(:delete => "api/v1/#{entity}/1.json").to route_to(:controller => "ffcrm_api/v1/#{entity}", :action => 'destroy', :id => '1', :format => 'json')
+      end
+    end
+
   end
 end

@@ -93,4 +93,10 @@ feature 'Entities index' do
 #~
   #~ end
 
+  scenario 'should delete the entity' do
+
+    lambda { delete("api/v1/#{entitys_name}/#{@entity1.id}", :format => :json) }.should change(Account, :count).by(-1)
+
+  end
+
 end

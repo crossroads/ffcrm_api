@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get "#{entity}"     => "ffcrm_api/v1/#{entity}#index",  :format => 'json'
       get "#{entity}/:id" => "ffcrm_api/v1/#{entity}#show",   :format => 'json'
       put "#{entity}/:id" => "ffcrm_api/v1/#{entity}#update", :format => 'json'
+      delete "#{entity}/:id" => "ffcrm_api/v1/#{entity}#destroy", :format => 'json'
     end
 
   end
