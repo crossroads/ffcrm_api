@@ -30,6 +30,7 @@ Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks
 * Authentication (Oauth token)
 * Authorization (via CanCan) to ensure user only see/acts on objects they are allowed
 * Entity specific API actions E.g. tasks overdue
+* Address mass-assignment issues - currently it is bypassed so it is possible for admin flag on User to be changed.
 
 ## Tests
 
