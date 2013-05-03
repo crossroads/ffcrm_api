@@ -6,15 +6,28 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
   # TODO paging and custom ordering support required
   def index
     entities = klass.order(:created_at)
+    entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
     render :json => entities, :each_serializer => serializer
   end
 
   def show
-    entity = klass.find(params[:id])
     render :json => entity, :serializer => serializer
   end
 
+  def update
+    entity.update_attributes( params[entity_name], :without_protection => true ) # TODO whitelisting
+    render :json => entity, :serializer => serializer
+  end
+
+  def delete
+    entity.destroy
+  end
+
   protected
+
+  def entity
+    @entity ||= klass.find(params[:id])
+  end
 
   # e.g. opportunity
   def entity_name

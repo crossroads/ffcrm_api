@@ -12,20 +12,13 @@ When the API reaches a stable version 1.0 we will mostly likely incorporate it i
 
 Provides index and show actions for all entities (and tasks and users) via json.
 
- * /api/v1/accounts.json
- * /api/v1/accounts/1.json
- * /api/v1/contacts.json
- * /api/v1/contacts/1.json
- * /api/v1/campaigns.json
- * /api/v1/campaigns/1.json
- * /api/v1/leads.json
- * /api/v1/leads/1.json
- * /api/v1/opportunities.json
- * /api/v1/opportunities/1.json
- * /api/v1/tasks.json
- * /api/v1/tasks/1.json
- * /api/v1/users.json
- * /api/v1/users/1.json
+E.g. for accounts
+
+ * GET /api/v1/accounts.json    (index)
+ * GET /api/v1/accounts/1.json  (show)
+ * PUT /api/v1/accounts/1.json  (update)
+
+Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks and users.
 
 ## TODO
 
@@ -35,7 +28,6 @@ Provides index and show actions for all entities (and tasks and users) via json.
 * Custom ordering of objects server-side
 * Authentication (Oauth token)
 * Authorization (via CanCan) to ensure user only see/acts on objects they are allowed
-* Ability to update entities
 * Ability to delete entities
 * Entity specific API actions E.g. tasks overdue
 

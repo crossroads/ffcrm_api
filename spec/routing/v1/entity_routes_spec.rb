@@ -17,5 +17,11 @@ describe FfcrmApi::V1::ContactsController do
       end
     end
 
+    it "update" do
+      entities.each do |entity|
+        expect(:put => "api/v1/#{entity}/1.json").to route_to(:controller => "ffcrm_api/v1/#{entity}", :action => 'update', :id => '1', :format => 'json')
+      end
+    end
+
   end
 end
