@@ -1,11 +1,12 @@
 class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
+  before_filter :require_login
 
   respond_to :json
   rescue_from ActiveRecord::RecordNotFound, :with => :not_found
 
   # TODO paging and custom ordering support required
   def index
-    entities = klass.order(:created_at)
+    entities = klass.order('created_at')
     entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
     render :json => entities, :each_serializer => serializer
   end
