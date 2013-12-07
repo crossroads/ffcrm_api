@@ -6,7 +6,7 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
 
   # TODO paging and custom ordering support required
   def index
-    entities = klass.order(:created_at)
+    entities = klass.order('created_at DESC')
     entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
     render :json => entities, :each_serializer => serializer
   end
