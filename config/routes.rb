@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       delete "#{entity}/:id" => "ffcrm_api/v1/#{entity}#destroy", :format => 'json'
     end
 
+    post "auth/get_get_single_access_token"
   end
 
 end
