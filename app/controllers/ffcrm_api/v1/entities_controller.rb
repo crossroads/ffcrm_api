@@ -1,4 +1,5 @@
 class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
+  before_filter :require_login
 
   respond_to :json
   rescue_from ActiveRecord::RecordNotFound, :with => :not_found
