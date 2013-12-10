@@ -27,7 +27,6 @@ Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks
 * Search for multiple ids (as specified by Ember)
 * Pagination of objects server-side
 * Custom ordering of objects server-side
-* Authentication (Oauth token)
 * Authorization (via CanCan) to ensure user only see/acts on objects they are allowed
 * Entity specific API actions E.g. tasks overdue
 * Address mass-assignment issues - currently it is bypassed so it is possible for admin flag on User to be changed.
@@ -40,6 +39,10 @@ Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks
 
 Fat Free CRM developers who have an interest in pushing towards a stable API are welcome to submit pull-requests, but I'd rather just add you as a collaborator to the github project.
 Contact me on the Fat Free CRM users list: https://groups.google.com/forum/?fromgroups#!forum/fat-free-crm-users
+
+Thanks to the following developers:
+
+* SoonKhen OwYong and Brendan Neal (Single access token work)
 
 ## LICENSE
 
