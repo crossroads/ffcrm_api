@@ -2,6 +2,8 @@ require 'spec_helper'
 
 feature 'Entities index' do
 
+  let(:user) { FactoryGirl.create(:user) }
+  let(:auth_params) { "single_access_token=" + user.single_access_token }
   let(:entitys_name) { 'accounts' }
   let(:entity_name)  { entitys_name.singularize }
 
@@ -14,7 +16,7 @@ feature 'Entities index' do
 
   scenario 'index should return json data' do
 
-    get("api/v1/#{entitys_name}", :format => :json)
+    get("api/v1/#{entitys_name}?#{auth_params}", :format => :json)
 
     response.response_code.should eql(200)
     data = JSON.parse(response.body)
@@ -33,7 +35,7 @@ feature 'Entities index' do
 
     # ids[]=1&ids[]=3
     query = [ @entity1.id, @entity3.id ].map{ |id| "ids[]=#{id}" }.join('&')
-    get("api/v1/#{entitys_name}?#{query}", :format => :json)
+    get("api/v1/#{entitys_name}?#{query}&#{auth_params}", :format => :json)
 
     response.response_code.should eql(200)
     data = JSON.parse(response.body)
@@ -46,7 +48,7 @@ feature 'Entities index' do
 
   scenario 'show should return json data' do
 
-    get("api/v1/#{entitys_name}/#{@entity1.id}", :format => :json)
+    get("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json)
 
     response.response_code.should eql(200)
     data = JSON.parse(response.body)
@@ -61,7 +63,7 @@ feature 'Entities index' do
 
   scenario 'show should return 404 when not found' do
 
-    get("api/v1/#{entitys_name}/12345", :format => :json)
+    get("api/v1/#{entitys_name}/12345?#{auth_params}", :format => :json)
 
     response.response_code.should eql(404)
     data = JSON.parse(response.body)
@@ -71,7 +73,7 @@ feature 'Entities index' do
 
   scenario 'update should save the model' do
 
-    put("api/v1/#{entitys_name}/#{@entity1.id}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
+    put("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
 
     response.response_code.should eql(200)
     data = JSON.parse(response.body)
@@ -86,7 +88,7 @@ feature 'Entities index' do
     #~ Account.stub!(:find).and_return(@entity1)
     #~ @entity1.should_receive(:update_attributes).and_return(false)
 #~
-    #~ put("api/v1/#{entitys_name}/#{@entity1.id}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
+    #~ put("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
 #~
     #~ response.response_code.should eql(422)
     #~ data = JSON.parse(response.body).should be_nil
@@ -95,7 +97,7 @@ feature 'Entities index' do
 
   scenario 'should delete the entity' do
 
-    lambda { delete("api/v1/#{entitys_name}/#{@entity1.id}", :format => :json) }.should change(Account, :count).by(-1)
+    lambda { delete("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json) }.should change(Account, :count).by(-1)
 
   end
 
