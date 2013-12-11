@@ -85,7 +85,7 @@ feature 'Entities index' do
 
   #~ scenario 'failed update should return 422' do
 #~
-    #~ Account.stub!(:find).and_return(@entity1)
+    #~ Account.stub(:find).and_return(@entity1)
     #~ @entity1.should_receive(:update_attributes).and_return(false)
 #~
     #~ put("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)

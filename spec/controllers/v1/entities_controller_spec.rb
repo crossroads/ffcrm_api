@@ -3,7 +3,7 @@ require 'spec_helper'
 describe FfcrmApi::V1::EntitiesController do
 
   before do
-    controller.stub!(:controller_name).and_return('accounts')
+    controller.stub(:controller_name).and_return('accounts')
   end
 
   it 'entity_name' do
