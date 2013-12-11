@@ -7,5 +7,8 @@ env:
 
 bundler_args: --path=vendor/bundle --without heroku
 
+before_script:
+  - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database ffcrm_api_test;' -U postgres; fi"
+
 # Run specs
 script: "bundle exec rake"
