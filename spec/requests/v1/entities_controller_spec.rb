@@ -57,6 +57,11 @@ feature 'Entities index' do
     ids.should_not include(@entity2.id)
   end
 
+  scenario 'index should return 400 if invalid params' do
+    get("api/v1/#{entitys_name}?order=blah&sort_by=crazy_date&#{auth_params}", :format => :json)
+    response.response_code.should eql(400)
+  end
+
   scenario 'show should return json data' do
 
     get("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json)

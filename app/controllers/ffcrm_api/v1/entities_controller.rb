@@ -6,15 +6,20 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
 
   # TODO paging
   def index
-    begin
-      sort_by = params[:sort_by] || 'created_at'
-      order = params[:order] || 'desc'
-      entities = klass.order("#{sort_by} #{order}")
-      entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
-      render :json => entities, :each_serializer => serializer
-    rescue
-      head 400
+    if params[:sort_by] or params[:order]
+      if klass.column_names.include?(params[:sort_by]) and %w(asc desc).include?(params[:order])
+        sort_by = params[:sort_by]
+        order = params[:order]
+      else
+        return head 400
+      end
+    else
+      sort_by = "created_at"
+      order = "desc"
     end
+    entities = klass.order("#{sort_by} #{order}")
+    entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
+    render :json => entities, :each_serializer => serializer
   end
 
   def show
