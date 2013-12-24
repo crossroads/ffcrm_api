@@ -6,13 +6,10 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
 
   # TODO paging
   def index
-    if params[:sort_by] or params[:order]
-      if klass.column_names.include?(params[:sort_by]) and %w(asc desc).include?(params[:order])
-        sort_by = params[:sort_by]
-        order = params[:order]
-      else
-        return head 400
-      end
+    sort_by = params[:sort_by]
+    order = params[:order]
+    if sort_by or order
+      return head 400 unless klass.column_names.include?(sort_by) and %w(asc desc).include?(order)
     else
       sort_by = "created_at"
       order = "desc"
