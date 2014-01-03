@@ -28,7 +28,18 @@ feature 'Entities index' do
       items['name'].should eql( match.name )
       items['background_info'].should eql( match.background_info )
     end
+  end
 
+  scenario 'index should return data in descending order of creation' do
+    @new_entity = FactoryGirl.create(entity_name, created_at: Time.now)
+    get("api/v1/#{entitys_name}?#{auth_params}", :format => :json)
+    JSON.parse(response.body)[entitys_name].first['id'].to_i.should eql(@new_entity.id)
+  end
+  
+  scenario 'index should allow custom ordering' do
+    @new_entity = FactoryGirl.create(entity_name, created_at: Time.now)
+    get("api/v1/#{entitys_name}?order=asc&sort_by=created_at&#{auth_params}", :format => :json)
+    JSON.parse(response.body)[entitys_name].last['id'].to_i.should eql(@new_entity.id)
   end
 
   scenario 'index should return json data of multiple items' do
@@ -44,6 +55,11 @@ feature 'Entities index' do
     ids.should include(@entity1.id)
     ids.should include(@entity3.id)
     ids.should_not include(@entity2.id)
+  end
+
+  scenario 'index should return 400 if invalid params' do
+    get("api/v1/#{entitys_name}?order=blah&sort_by=crazy_date&#{auth_params}", :format => :json)
+    response.response_code.should eql(400)
   end
 
   scenario 'show should return json data' do
