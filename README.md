@@ -2,11 +2,7 @@
 
 This is a plugin for Fat Free CRM that provides an API to access data using REST principles and serialized as json.
 
-The use case currently driving development of the API is to connect with Ember.js applications.
-
-*IMPORTANT NOTE:* Whilst we are developing this plugin, this will be unstable code. Do NOT consider this production ready code. There are still plenty of security concerns to address!
-
-When the API reaches a stable version 1.0 we will mostly likely incorporate it into the Fat Free CRM and release it.
+*IMPORTANT NOTE:* Do NOT consider this production ready code. There are still plenty of security concerns to address!
 
 ## Features
 
@@ -14,18 +10,37 @@ Provides index and show actions for all entities (and tasks and users) via json.
 
 E.g. for accounts
 
- * GET    /api/v1/accounts.json   (index)
- * GET    /api/v1/accounts/1.json (show)
- * PUT    /api/v1/accounts/1.json (update)
- * DELETE /api/v1/accounts/1.json (destroy)
+ * GET    /api/v1/accounts.json?single_access_token=XYZQWERT1231!#@   (index)
+ * GET    /api/v1/accounts/1.json?single_access_token=XYZQWERT1231!#@ (show)
+ * PUT    /api/v1/accounts/1.json?single_access_token=XYZQWERT1231!#@ (update)
+ * DELETE /api/v1/accounts/1.json?single_access_token=XYZQWERT1231!#@ (destroy)
 
 Substitute 'accounts' above for contacts, campaigns, opportunities, leads, tasks and users.
+
+Note: to get the single_access_token for the currently logged in user, go to the 'profile' section in Fat Free CRM.
+
+## EXAMPLE RESPONSES
+
+GET /api/v1/contacts/47.json
+
+    {
+      contact: {
+        id: 47,
+        first_name: "Cary",
+        last_name: "Wiza",
+        user_id: 5,
+        opportunity_ids: [
+          43
+        ]
+      }
+    }
+
 
 ## TODO
 
 * Expand on list of model attributes that are serialized.
-* Search for multiple ids (as specified by Ember)
-* Pagination of objects server-side
+* Search for multiple ids e.g. contacts.json?ids=1,2,3,4
+* Pagination of objects server-side (currently everything is returned)
 * Custom ordering of objects server-side
 * Authorization (via CanCan) to ensure user only see/acts on objects they are allowed
 * Entity specific API actions E.g. tasks overdue
