@@ -15,4 +15,4 @@ gem "jquery-rails"
 # your gem to rubygems.org.
 
 # To use debugger
-gem 'byebug'
+gem 'byebug' unless ENV['CI']
