@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe FfcrmApi::V1::EntitiesController do
+describe FfcrmApi::V1::EntitiesController, type: 'controller' do
 
   before do
-    controller.stub(:controller_name).and_return('accounts')
+    allow(controller).to receive(:controller_name).and_return('accounts')
   end
 
   it 'entity_name' do
-    controller.send(:entity_name).should == "account"
+    expect(controller.send(:entity_name)).to eql("account")
   end
 
   it 'klass' do
-    controller.send(:klass).to_s.should == "Account"
+    expect(controller.send(:klass).to_s).to eql("Account")
   end
 
   it 'serializer' do
-    controller.send(:serializer).to_s.should == "FfcrmApi::V1::AccountSerializer"
+    expect(controller.send(:serializer).to_s).to eql("FfcrmApi::V1::AccountSerializer")
   end
 
 end

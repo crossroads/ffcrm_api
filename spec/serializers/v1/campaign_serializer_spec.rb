@@ -3,17 +3,17 @@ require 'spec_helper'
 describe FfcrmApi::V1::CampaignSerializer do
 
   let(:entity) { FactoryGirl.build(:campaign) }
+  let(:serializer) { FfcrmApi::V1::CampaignSerializer.new(entity, {}) }
 
-  before do
-    @serializer = FfcrmApi::V1::CampaignSerializer.new(entity, {})
-  end
+  subject { serializer.as_json["campaign"] }
 
-  %w( id name status starts_on ends_on user_id assigned_to ).each do |attr|
-    instance_eval %Q{
-      it "should include #{attr}" do
-        @serializer.as_json[:campaign][:#{attr}].should == entity.#{attr}
-      end
-    }, __FILE__, __LINE__ - 4
+  it "should have attributes" do
+    expect(subject[:name]).to eql(entity.name)
+    expect(subject[:assigned_to]).to eql(entity.assigned_to)
+    expect(subject[:status]).to eql(entity.status)
+    expect(subject[:starts_on]).to eql(entity.starts_on)
+    expect(subject[:ends_on]).to eql(entity.ends_on)
+    expect(subject[:user_id]).to eql(entity.user_id)
   end
 
 end

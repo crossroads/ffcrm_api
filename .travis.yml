@@ -1,4 +1,4 @@
-sudo: false
+g .sudo: false
 language: ruby
 rvm:
   - 1.9.3
@@ -7,6 +7,7 @@ rvm:
 env:
   - DB=postgres
 
+cache: bundler
 bundler_args: --path=vendor/bundle --without heroku
 
 before_script:

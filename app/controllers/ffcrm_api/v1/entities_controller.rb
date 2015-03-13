@@ -24,7 +24,7 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
   end
 
   def update
-    entity.update_attributes( params[entity_name], :without_protection => true ) # TODO whitelisting
+    entity.update_attributes( resource_params ) # TODO params whitelisting
     render :json => entity, :serializer => serializer
   end
 
@@ -56,6 +56,10 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
 
   def not_found
     render :json => {}, :status => :not_found
+  end
+
+  def resource_params
+    params[entity_name].permit!
   end
 
 end

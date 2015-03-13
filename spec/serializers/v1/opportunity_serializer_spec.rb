@@ -3,17 +3,16 @@ require 'spec_helper'
 describe FfcrmApi::V1::OpportunitySerializer do
 
   let(:entity) { FactoryGirl.build(:opportunity, :account => nil) }
+  let(:serializer) { FfcrmApi::V1::OpportunitySerializer.new(entity, {}) }
 
-  before do
-    @serializer = FfcrmApi::V1::OpportunitySerializer.new(entity, {})
-  end
+  subject { serializer.as_json["opportunity"] }
 
-  %w( id name background_info updated_at user_id contact_ids ).each do |attr|
-    instance_eval %Q{
-      it "should include #{attr}" do
-        @serializer.as_json[:opportunity][:#{attr}].should == entity.#{attr}
-      end
-    }, __FILE__, __LINE__ - 4
+  it "should have attributes" do
+    expect(subject[:name]).to eql(entity.name)
+    expect(subject[:updated_at]).to eql(entity.updated_at)
+    expect(subject[:contact_ids]).to eql(entity.contact_ids)
+    expect(subject[:background_info]).to eql(entity.background_info)
+    expect(subject[:user_id]).to eql(entity.user_id)
   end
 
 end

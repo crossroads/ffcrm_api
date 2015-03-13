@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Entities index' do
+feature 'Entities index', type: 'request' do
 
   let(:user) { FactoryGirl.create(:user) }
   let(:auth_params) { "single_access_token=" + user.single_access_token }
@@ -15,9 +15,7 @@ feature 'Entities index' do
   end
 
   scenario 'index should return json data' do
-
-    get("api/v1/#{entitys_name}?#{auth_params}", :format => :json)
-
+    get("/api/v1/#{entitys_name}?#{auth_params}", :format => :json)
     response.response_code.should eql(200)
     data = JSON.parse(response.body)
     data.keys.should include(entitys_name)
@@ -26,95 +24,80 @@ feature 'Entities index' do
       id = items['id']
       match = @entities[id]
       items['name'].should eql( match.name )
-      items['background_info'].should eql( match.background_info )
+      expect(items['background_info']).to eql( match.background_info )
     end
   end
 
   scenario 'index should return data in descending order of creation' do
     @new_entity = FactoryGirl.create(entity_name, created_at: Time.now)
-    get("api/v1/#{entitys_name}?#{auth_params}", :format => :json)
-    JSON.parse(response.body)[entitys_name].first['id'].to_i.should eql(@new_entity.id)
+    get("/api/v1/#{entitys_name}?#{auth_params}", :format => :json)
+    expect(JSON.parse(response.body)[entitys_name].first['id'].to_i).to eql(@new_entity.id)
   end
-  
+
   scenario 'index should allow custom ordering' do
     @new_entity = FactoryGirl.create(entity_name, created_at: Time.now)
-    get("api/v1/#{entitys_name}?order=asc&sort_by=created_at&#{auth_params}", :format => :json)
-    JSON.parse(response.body)[entitys_name].last['id'].to_i.should eql(@new_entity.id)
+    get("/api/v1/#{entitys_name}?order=asc&sort_by=created_at&#{auth_params}", :format => :json)
+    expect(JSON.parse(response.body)[entitys_name].last['id'].to_i).to eql(@new_entity.id)
   end
 
   scenario 'index should return json data of multiple items' do
 
     # ids[]=1&ids[]=3
     query = [ @entity1.id, @entity3.id ].map{ |id| "ids[]=#{id}" }.join('&')
-    get("api/v1/#{entitys_name}?#{query}&#{auth_params}", :format => :json)
+    get("/api/v1/#{entitys_name}?#{query}&#{auth_params}", :format => :json)
 
-    response.response_code.should eql(200)
+    expect(response.response_code).to eql(200)
     data = JSON.parse(response.body)
-    data.keys.should include(entitys_name)
+    expect(data.keys).to include(entitys_name)
     ids = data[entitys_name].map{|v| v['id']}
-    ids.should include(@entity1.id)
-    ids.should include(@entity3.id)
-    ids.should_not include(@entity2.id)
+    expect(ids).to include(@entity1.id)
+    expect(ids).to include(@entity3.id)
+    expect(ids).not_to include(@entity2.id)
   end
 
   scenario 'index should return 400 if invalid params' do
-    get("api/v1/#{entitys_name}?order=blah&sort_by=crazy_date&#{auth_params}", :format => :json)
-    response.response_code.should eql(400)
+    get("/api/v1/#{entitys_name}?order=blah&sort_by=crazy_date&#{auth_params}", :format => :json)
+    expect(response.response_code).to eql(400)
   end
 
   scenario 'show should return json data' do
-
-    get("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json)
-
-    response.response_code.should eql(200)
+    get("/api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json)
+    expect(response.response_code).to eql(200)
     data = JSON.parse(response.body)
-    data.keys.should include(entity_name)
-    data.values.size.should == 1
+    expect(data.keys).to include(entity_name)
+    expect(data.values.size).to eql(1)
     item = data[entity_name]
-    item['id'].should == @entity1.id
-    item['name'].should == @entity1.name
-    item['background_info'].should == @entity1.background_info
-
+    expect(item['id']).to eql(@entity1.id)
+    expect(item['name']).to eql(@entity1.name)
+    expect(item['background_info']).to eql(@entity1.background_info)
   end
 
   scenario 'show should return 404 when not found' do
-
-    get("api/v1/#{entitys_name}/12345?#{auth_params}", :format => :json)
-
-    response.response_code.should eql(404)
+    get("/api/v1/#{entitys_name}/12345?#{auth_params}", format: :json)
+    expect(response.response_code).to eql(404)
     data = JSON.parse(response.body)
-    data[entity_name].should == nil
-
+    expect(data[entity_name]).to eql(nil)
   end
 
   scenario 'update should save the model' do
-
-    put("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
-
-    response.response_code.should eql(200)
+    put("/api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
+    expect(response.response_code).to eql(200)
     data = JSON.parse(response.body)
     item = data[entity_name]
-    item['id'].should == @entity1.id
-    item['name'].should == "#{@entity1.name}_changed"
-
+    expect(item['id']).to eql(@entity1.id)
+    expect(item['name']).to eql("#{@entity1.name}_changed")
   end
 
-  #~ scenario 'failed update should return 422' do
-#~
-    #~ Account.stub(:find).and_return(@entity1)
-    #~ @entity1.should_receive(:update_attributes).and_return(false)
-#~
-    #~ put("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
-#~
-    #~ response.response_code.should eql(422)
-    #~ data = JSON.parse(response.body).should be_nil
-#~
-  #~ end
+  pending 'failed update should return 422' do
+    allow(Account).to receive(:find).and_return(@entity1)
+    expect(@entity1).to receive(:update_attributes).and_return(false)
+    put("/api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", entity_name => {:name => "#{@entity1.name}_changed"}, :format => :json)
+    expect(response.response_code).to eql(422)
+    expect(JSON.parse(response.body)).to eql(nil)
+  end
 
   scenario 'should delete the entity' do
-
-    lambda { delete("api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", :format => :json) }.should change(Account, :count).by(-1)
-
+    expect{ delete("/api/v1/#{entitys_name}/#{@entity1.id}?#{auth_params}", format: :json) }.to change(Account, :count).by(-1)
   end
 
 end

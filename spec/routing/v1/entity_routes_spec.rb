@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FfcrmApi::V1::ContactsController do
+describe FfcrmApi::V1::ContactsController, type: 'routing' do
   describe "routing" do
 
     let(:entities) { %w(accounts contacts campaigns opportunities leads tasks users) }
