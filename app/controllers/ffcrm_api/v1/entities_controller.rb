@@ -15,7 +15,8 @@ class FfcrmApi::V1::EntitiesController < FfcrmApi::ApplicationController
       order = "desc"
     end
     entities = klass.order("#{sort_by} #{order}")
-    entities = entities.where(:id => params[:ids]) unless params[:ids].nil?
+    entities = entities.where(:id => params[:ids]) if params[:ids].present?
+    entities = entities.text_search(params[:query]) if params[:query].present?
     render :json => entities, :each_serializer => serializer
   end
 
